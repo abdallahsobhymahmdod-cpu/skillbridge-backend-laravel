@@ -14,25 +14,26 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'status',
-    ];
+    'name',
+    'email',
+    'password_hash',
+    'role',
+    'status',
+    'email_verified_at',
+    'last_login_at',
+];
 
     protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    'password_hash',
+    'remember_token',
+];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+protected function casts(): array
+{
+    return [
+        'email_verified_at' => 'datetime',
+    ];
+}
 
     public function profile(): HasOne
     {

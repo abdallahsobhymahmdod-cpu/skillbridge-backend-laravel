@@ -11,6 +11,9 @@ use App\Http\Controllers\Api\SettingController;
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -42,4 +45,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/settings/profile', [SettingController::class, 'profile']);
     Route::put('/settings/profile', [SettingController::class, 'updateProfile']);
+    Route::post('/settings/profile', [SettingController::class, 'updateProfile']);
 });

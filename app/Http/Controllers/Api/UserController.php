@@ -33,34 +33,43 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function index(): JsonResponse
-    {
-        $users = User::with('profile')->latest()->get();
+   public function index(): JsonResponse
+{
+    $users = User::with([
+        'profile',
+        'userSkills.skill.category',
+    ])->get();
 
+    return response()->json([
+        'status' => true,
+        'message' => 'Users fetched successfully.',
+        'data' => $users,
+    ]);
+}
+
+    public function show($id): JsonResponse
+{
+    $user = User::with([
+        'profile',
+        'userSkills.skill.category',
+        'reviewsWritten',
+        'reviewsReceived',
+        'activityLogs',
+    ])->find($id);
+
+    if (! $user) {
         return response()->json([
-            'status' => true,
-            'message' => 'Users fetched successfully.',
-            'data' => $users,
-        ]);
+            'status' => false,
+            'message' => 'User not found.',
+        ], 404);
     }
 
-    public function show(int $id): JsonResponse
-    {
-        $user = User::with(['profile', 'userSkills.skill'])->find($id);
-
-        if (! $user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'User not found.',
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => 'User details fetched successfully.',
-            'data' => $user,
-        ]);
-    }
+    return response()->json([
+        'status' => true,
+        'message' => 'User details fetched successfully.',
+        'data' => $user,
+    ]);
+}
 
     public function allReviews(): JsonResponse
     {

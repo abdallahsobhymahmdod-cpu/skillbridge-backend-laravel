@@ -18,8 +18,15 @@ class UpdateProfileRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $userId],
+
             'bio' => ['nullable', 'string'],
+
+            // لو الفرونت بعت رابط صورة جاهز
             'avatar_url' => ['nullable', 'string', 'max:255'],
+
+            // لو الفرونت بعت صورة ملف
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+
             'country' => ['nullable', 'string', 'max:100'],
         ];
     }
@@ -41,6 +48,10 @@ class UpdateProfileRequest extends FormRequest
 
             'avatar_url.string' => 'Avatar URL must be a valid string.',
             'avatar_url.max' => 'Avatar URL must not exceed 255 characters.',
+
+            'avatar.image' => 'Avatar must be an image.',
+            'avatar.mimes' => 'Avatar must be jpg, jpeg, png, or webp.',
+            'avatar.max' => 'Avatar must not be larger than 2MB.',
 
             'country.string' => 'Country must be a valid string.',
             'country.max' => 'Country must not exceed 100 characters.',
